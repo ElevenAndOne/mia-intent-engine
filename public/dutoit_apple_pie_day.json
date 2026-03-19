@@ -1,0 +1,287 @@
+{
+  "meta": {
+    "source_file": "Mia OSA RACE_Dutoit Always-On_ Apple Pie Day.pdf",
+    "parsed_at": "2026-02-27",
+    "figjam_version": "v1",
+    "schema_version": "1.0"
+  },
+  "campaign": {
+    "client_name": "Dutoit",
+    "campaign_name": "Apple Pie Day",
+    "start_date": "2026-02-23",
+    "end_date": "2026-05-15",
+    "budget_total": 50000,
+    "budget_monthly": 25000,
+    "budget_currency": "ZAR",
+    "status": "live",
+    "channels": ["meta_ads", "google_ads", "organic_social", "email"],
+    "objectives": [
+      "Deepen emotional connection with Dutoit by positioning the brand as part of family traditions and shared kitchen moments.",
+      "Increase sales of Dutoit apple bags in Pick n Pay during campaign window.",
+      "Drive UGC and participation through the magnet mechanic and social posting requirement."
+    ]
+  },
+  "phases": [
+    {
+      "phase_name": "Reach",
+      "sort_order": 0,
+      "objective": "Build emotional salience and visibility",
+      "strategy": "Build emotional territory and mass awareness of the 'advice' platform before the competition push. 23 Feb - mid April. Meta Ad as primary engine. Creative themes: 'The best advice with every slice', nostalgic kitchen moments, handwritten notes visual system. Formats: Reels (hero), Story ads, Static postcards. Targeting: Women 25-54, Parents, Baking interests, Pick n Pay shoppers, Lookalikes from Dutoit engagers. Google Ads: Light but strategic — apple pie recipe searches, baking searches, branded defence. Organic Social content engine: Call for advice, recipe content, community spotlights. Email: Existing database awareness, Apple Pie Day build-up.",
+      "kpis": [
+        { "kpi_name": "Reach", "target_value": "1,100,000", "target_numeric": 1100000, "unit": "count" },
+        { "kpi_name": "Engagement rate", "target_value": "5%", "target_numeric": 5.0, "unit": "percent" },
+        { "kpi_name": "Email open rate", "target_value": "30%", "target_numeric": 30.0, "unit": "percent" },
+        { "kpi_name": "New followers", "target_value": "250", "target_numeric": 250, "unit": "count" }
+      ],
+      "channel_actions": [
+        {
+          "channel": "meta_ads",
+          "objective": "Build emotional salience and broad awareness of the 'Advice Behind the Slice' platform at efficient scale.",
+          "strategy": "Use high-reach, emotionally resonant creative to establish Dutoit as part of family traditions and kitchen moments, prioritising video-first formats to maximise efficient reach.",
+          "assets": [
+            {
+              "asset_name": "Competition Carousel",
+              "asset_type": "carousel",
+              "key_message": "The best advice with every slice.",
+              "details": { "month": "February" }
+            },
+            {
+              "asset_name": "Postcard Carousel 1: Handwritten Advice Visuals",
+              "asset_type": "carousel",
+              "key_message": "Some advice stays with you forever.",
+              "details": { "month": "March", "visual_style": "Textured paper + warm photography" }
+            }
+          ]
+        },
+        {
+          "channel": "organic_social",
+          "objective": "Prime the community emotionally and introduce the advice platform.",
+          "strategy": "Use high-reach, emotionally resonant creative to establish Dutoit as part of family traditions and kitchen moments, prioritising video-first formats to maximise efficient reach.",
+          "assets": [
+            {
+              "asset_name": "Competition Carousel",
+              "asset_type": "carousel",
+              "key_message": "The best advice with every slice.",
+              "details": { "month": "February" }
+            },
+            {
+              "asset_name": "Micro Animation",
+              "asset_type": "animation",
+              "key_message": "Some advice stays with you forever.",
+              "details": { "month": "March" }
+            }
+          ]
+        },
+        {
+          "channel": "email",
+          "objective": "Warm the existing database and build early campaign awareness.",
+          "strategy": "Leverage owned audience to introduce the campaign narrative and prime future participation.",
+          "assets": [
+            {
+              "asset_name": "Email 1",
+              "asset_type": "email",
+              "key_message": "Introduce Advice Behind the Slice. + Kitchen Aid Comp.",
+              "details": { "subject_line": "Apple Pie Day is coming" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_name": "Act",
+      "sort_order": 1,
+      "objective": "Drive submissions and meaningful participation.",
+      "strategy": "Primary CTA: 'Share the advice that stayed with you.' Meta optimised for engagement (video views, traffic to landing page). Creative: question-led posts, UGC prompts, comment bait formats. Landing page must capture: advice submission, email (for Engage phase), consent for reuse. Organic weekly rhythm: community reposts, handwritten advice cards, 'Advice of the week'. Email sends: advice submission push, reminder to submit, community spotlight.",
+      "kpis": [
+        { "kpi_name": "Engagement rate", "target_value": "5%", "target_numeric": 5.0, "unit": "percent" },
+        { "kpi_name": "Meaningful submissions", "target_value": "500", "target_numeric": 500, "unit": "count" },
+        { "kpi_name": "Link clicks", "target_value": "25,000", "target_numeric": 25000, "unit": "count" },
+        { "kpi_name": "Email open rate", "target_value": "30%", "target_numeric": 30.0, "unit": "percent" },
+        { "kpi_name": "Email CTR", "target_value": "3%", "target_numeric": 3.0, "unit": "percent" }
+      ],
+      "channel_actions": [
+        {
+          "channel": "meta_ads",
+          "objective": "Drive advice submissions and meaningful engagement.",
+          "strategy": "Shift from broad emotional reach to participation-focused creative using prompts, questions, and social proof.",
+          "assets": [
+            {
+              "asset_name": "Comp 2",
+              "asset_type": "carousel_reel",
+              "key_message": "What's the best advice you've ever received?",
+              "cta": "Submit your story today."
+            },
+            {
+              "asset_name": "Magnets Reel x2",
+              "asset_type": "reel"
+            },
+            {
+              "asset_name": "Magnets Carousel x1",
+              "asset_type": "carousel"
+            }
+          ]
+        },
+        {
+          "channel": "organic_social",
+          "objective": "Drive advice submissions and meaningful engagement.",
+          "strategy": "Shift from broad emotional reach to participation-focused creative using prompts, questions, and social proof.",
+          "assets": [
+            {
+              "asset_name": "Comp 2",
+              "asset_type": "carousel_reel",
+              "key_message": "What's the best advice you've ever received?",
+              "cta": "Submit your story today."
+            },
+            {
+              "asset_name": "Handwritten Note",
+              "asset_type": "static",
+              "key_message": "Advice with every slice"
+            },
+            {
+              "asset_name": "Magnets Reel x2",
+              "asset_type": "reel"
+            },
+            {
+              "asset_name": "Magnets Carousel x1",
+              "asset_type": "carousel"
+            }
+          ]
+        },
+        {
+          "channel": "email",
+          "objective": "Convert warm audiences into advice contributors.",
+          "strategy": "Use targeted sends to push submissions and remind non-responders.",
+          "assets": [
+            {
+              "asset_name": "Email Send 1",
+              "asset_type": "email",
+              "key_message": "Drive store visit.",
+              "details": { "subject_line": "Magnets now in-store" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_name": "Convert",
+      "sort_order": 2,
+      "objective": "Turn emotional equity into: Apple bag purchases, Magnet collection and Competition entries.",
+      "strategy": "28 April - 15 May (peak) with Apple Pie Day on 13 May as the spike. Meta Ads conversion push: store traffic, engagement (UGC proof), reminder ads. Creative phases: Late April 'Collect the slices', Early May 'Complete your pie', Apple Pie Day week URGENCY creatives with countdown. Google Ads switch focus to: brand search, 'Apple specials', 'Pick n Pay apples'. Email: 'Magnets now in-store', 'Complete your pie', Apple Pie Day countdown.",
+      "kpis": [
+        { "kpi_name": "Sales uplift in campaign stores", "target_value": "+12%", "target_numeric": 12.0, "unit": "percent" },
+        { "kpi_name": "Competition entries", "target_value": "1,500", "target_numeric": 1500, "unit": "count" },
+        { "kpi_name": "Repeat purchase proxy (multi-bag buyers)", "target_value": "25%", "target_numeric": 25.0, "unit": "percent" }
+      ],
+      "channel_actions": [
+        {
+          "channel": "meta_ads",
+          "objective": "Drive apple bag purchases, magnet collection, and competition entries.",
+          "strategy": "Shift to urgency-led retail messaging supported by strong social proof of completed pies.",
+          "assets": [
+            {
+              "asset_name": "Urgency Carousel",
+              "asset_type": "carousel",
+              "key_message": "Don't miss out.",
+              "details": { "ad_set": "Last Chance Entry" }
+            }
+          ]
+        },
+        {
+          "channel": "organic_social",
+          "objective": "Drive social proof and retail urgency.",
+          "strategy": "Show prize and countdown.",
+          "assets": [
+            {
+              "asset_name": "Prize Showcase Post Series: Ceramic Kitchen Set",
+              "asset_type": "post_series",
+              "key_message": "Motivate entries."
+            },
+            {
+              "asset_name": "Countdown Post Series: Apple Pie Day",
+              "asset_type": "post_series",
+              "key_message": "Build urgency."
+            },
+            {
+              "asset_name": "Celebrate Apple Pie Day Carousel",
+              "asset_type": "carousel"
+            }
+          ]
+        },
+        {
+          "channel": "google_ads",
+          "objective": "Capture high-intent shoppers ready to purchase.",
+          "strategy": "Pivot search toward purchase-driven queries and brand reinforcement.",
+          "assets": [
+            {
+              "asset_name": "Search Campaign Refresh",
+              "asset_type": "search_ad",
+              "key_message": "Find Dutoit apples in-store.",
+              "details": { "ad_group": "Pick n Pay Apples" }
+            },
+            {
+              "asset_name": "Apple Specials Ad Group",
+              "asset_type": "search_ad",
+              "key_message": "Collect your slices today.",
+              "details": { "ad_group": "Apple Specials" }
+            }
+          ]
+        },
+        {
+          "channel": "email",
+          "objective": "Push warm audience to purchase and complete collections.",
+          "strategy": "Urgency-driven retail emails during peak window.",
+          "assets": [
+            {
+              "asset_name": "Email 1",
+              "asset_type": "email",
+              "key_message": "Final push.",
+              "details": { "subject_line": "Apple Pie Day is almost here" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_name": "Engage",
+      "sort_order": 3,
+      "objective": "Turn participants into long-term brand advocates.",
+      "strategy": "Apple Pie Day (13 May), Winner announcement (15 May), Post-campaign storytelling. Organic Social: winner stories, community thank-you, best advice compilation, recipe content continues. Email from Phase 1 database: Apple Pie Day celebration mail, community highlights, future recipe content.",
+      "kpis": [
+        { "kpi_name": "UGC posts (completed pie)", "target_value": "30", "target_numeric": 30, "unit": "count" },
+        { "kpi_name": "Email open rate", "target_value": "30%", "target_numeric": 30.0, "unit": "percent" },
+        { "kpi_name": "Repeat engagement", "target_value": "25%", "target_numeric": 25.0, "unit": "percent" }
+      ],
+      "channel_actions": [
+        {
+          "channel": "organic_social",
+          "objective": "Turn participants into long-term advocates.",
+          "strategy": "Celebrate the community and extend recipe-led value.",
+          "assets": [
+            {
+              "asset_name": "Winner Carousel Post Series: Winner Reveal",
+              "asset_type": "carousel",
+              "key_message": "Celebrate participation."
+            },
+            {
+              "asset_name": "Photography Carousel Post Series",
+              "asset_type": "carousel",
+              "key_message": "Maintain relevance."
+            }
+          ]
+        },
+        {
+          "channel": "email",
+          "objective": "Deepen loyalty and maintain long-term engagement.",
+          "strategy": "Close the loop with community celebration and ongoing value.",
+          "assets": [
+            {
+              "asset_name": "Winner Announcement Email",
+              "asset_type": "email",
+              "key_message": "Celebrate community and announce winner."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
