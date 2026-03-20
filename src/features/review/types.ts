@@ -1,4 +1,11 @@
 export type SubmissionResponse = {
   success: boolean;
-  message: string;
+  tenant_id: string;
+  campaign_name: string;
+  mia_import: {
+    status: string;
+    campaign_id: string;
+    campaign_name: string;
+    phases_created: number;
+  };
 };

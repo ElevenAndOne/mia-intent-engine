@@ -4,4 +4,15 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    host: 'localhost',
+    port: 5173,
+    strictPort: true,
+    origin: 'http://localhost:5173',
+  },
+  preview: {
+    host: 'localhost',
+    port: 5173,
+    strictPort: true,
+  },
 });

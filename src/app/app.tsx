@@ -18,8 +18,8 @@ const STEP_CONFIG = [
   { id: 'review', label: 'Review' },
 ];
 
-function ReviewStep({ initialData, sessionId, onBack }: { initialData: ParsedCampaign; sessionId: string; onBack: () => void }) {
-  const review = useReview(initialData, sessionId);
+function ReviewStep({ initialData, tenantId, filename, onBack }: { initialData: ParsedCampaign; tenantId: string; filename: string; onBack: () => void }) {
+  const review = useReview(initialData, tenantId, filename);
 
   return (
     <ReviewView
@@ -27,6 +27,7 @@ function ReviewStep({ initialData, sessionId, onBack }: { initialData: ParsedCam
       isSubmitting={review.isSubmitting}
       isSubmitted={review.isSubmitted}
       error={review.error}
+      submissionResult={review.submissionResult}
       onUpdateCampaign={review.updateCampaignField}
       onUpdatePhase={review.updatePhaseField}
       onUpdateKpi={review.updateKpi}
@@ -41,10 +42,8 @@ function AppContent() {
   const googleSignIn = useGoogleSignIn(auth.login);
   const steps = useStepNavigation();
   const workspaces = useWorkspaces(auth.sessionId);
-  const upload = useFileUpload(
-    workspaces.selectedWorkspace?.tenant_id ?? '',
-    auth.sessionId ?? '',
-  );
+  const upload = useFileUpload(workspaces.selectedWorkspace?.tenant_id ?? '');
+  const parseResult = upload.parseResult;
 
   if (!auth.isAuthenticated) {
     return (
@@ -101,9 +100,8 @@ function AppContent() {
             isUploading={upload.isUploading}
             error={upload.error}
             parsedData={upload.parsedData}
-            importResult={upload.importResult}
-            parseMessage={upload.parseMessage}
-            parseSource={upload.parseSource}
+            parseMessage={parseResult?.message}
+            parseSource={parseResult?.source}
             onFileSelect={upload.selectFile}
             onUpload={upload.upload}
             onContinue={handleUploadContinue}
@@ -111,10 +109,11 @@ function AppContent() {
           />
         )}
 
-        {steps.currentStep === 'review' && upload.parsedData && (
+        {steps.currentStep === 'review' && upload.parsedData && parseResult && (
           <ReviewStep
             initialData={upload.parsedData}
-            sessionId={auth.sessionId!}
+            tenantId={parseResult.tenant_id}
+            filename={parseResult.filename}
             onBack={handleReviewBack}
           />
         )}

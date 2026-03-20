@@ -6,12 +6,14 @@ import { Loader } from '../../../components/loader';
 import { StatusMessage } from '../../../components/status-message';
 import { PhaseEditor } from './phase-editor';
 import type { ParsedCampaign, Campaign, Phase, Kpi } from '../../../types/campaign';
+import type { SubmissionResponse } from '../types';
 
 type ReviewViewProps = {
   data: ParsedCampaign;
   isSubmitting: boolean;
   isSubmitted: boolean;
   error: string | null;
+  submissionResult: SubmissionResponse | null;
   onUpdateCampaign: (field: keyof Campaign, value: string | number) => void;
   onUpdatePhase: (phaseIndex: number, field: keyof Phase, value: string | number) => void;
   onUpdateKpi: (phaseIndex: number, kpiIndex: number, field: keyof Kpi, value: string | number) => void;
@@ -19,14 +21,18 @@ type ReviewViewProps = {
   onBack: () => void;
 };
 
-export function ReviewView({ data, isSubmitting, isSubmitted, error, onUpdateCampaign, onUpdatePhase, onUpdateKpi, onSubmit, onBack }: ReviewViewProps) {
+export function ReviewView({ data, isSubmitting, isSubmitted, error, submissionResult, onUpdateCampaign, onUpdatePhase, onUpdateKpi, onSubmit, onBack }: ReviewViewProps) {
   if (isSubmitted) {
     return (
       <Card className="text-center">
         <StatusMessage
           variant="success"
-          title="Campaign submitted"
-          message="Your campaign data has been submitted successfully."
+          title="Campaign imported"
+          message={
+            submissionResult
+              ? `Imported to MIA as ${submissionResult.mia_import.campaign_name} (ID: ${submissionResult.mia_import.campaign_id}).`
+              : 'Your campaign data has been submitted successfully.'
+          }
         />
         <Button variant="secondary" onClick={onBack} className="mt-4">
           Upload Another
@@ -91,14 +97,14 @@ export function ReviewView({ data, isSubmitting, isSubmitted, error, onUpdateCam
 
       <div className="flex gap-3">
         <Button onClick={onSubmit} disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting...' : 'Submit Campaign'}
+          {isSubmitting ? 'Confirming...' : 'Confirm & Import'}
         </Button>
         <Button variant="secondary" onClick={onBack} disabled={isSubmitting}>
           Back
         </Button>
       </div>
 
-      {isSubmitting && <Loader label="Submitting campaign..." />}
+      {isSubmitting && <Loader label="Importing campaign..." />}
     </div>
   );
 }

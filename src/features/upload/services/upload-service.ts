@@ -15,25 +15,24 @@ function buildParsedData(parsedData: ParsedCampaign, fileName?: string): ParsedC
   };
 }
 
-function buildParseResponse(parsedData: ParsedCampaign, source: 'sample', fileName?: string): ParseResponse {
+function buildParseResponse(parsedData: ParsedCampaign, tenantId: string, source: 'sample', fileName?: string): ParseResponse {
   return {
     success: true,
+    filename: fileName || parsedData.meta.source_file,
+    tenant_id: tenantId,
     campaign_name: parsedData.campaign.campaign_name,
     client_name: parsedData.campaign.client_name,
     phases_count: parsedData.phases.length,
     parsed_data: buildParsedData(parsedData, fileName),
     source,
     message: 'Using the local Dutoit Apple Pie Day sample until the parser URL is configured.',
-    mia_import: {
-      status: 'sample',
-      campaign_id: 'sample-dutoit-apple-pie-day',
-    },
   };
 }
 
 function normalizeLiveParseResponse(result: ParseResponse, fileName: string): ParseResponse {
   return {
     ...result,
+    filename: result.filename || fileName,
     parsed_data: buildParsedData(result.parsed_data, fileName),
     campaign_name: result.campaign_name || result.parsed_data.campaign.campaign_name,
     client_name: result.client_name || result.parsed_data.campaign.client_name,
@@ -42,7 +41,7 @@ function normalizeLiveParseResponse(result: ParseResponse, fileName: string): Pa
   };
 }
 
-async function loadSampleParseResponse(fileName: string): Promise<ParseResponse> {
+async function loadSampleParseResponse(fileName: string, tenantId: string): Promise<ParseResponse> {
   const response = await fetch(SAMPLE_PARSE_DATA_URL);
 
   if (!response.ok) {
@@ -50,18 +49,17 @@ async function loadSampleParseResponse(fileName: string): Promise<ParseResponse>
   }
 
   const parsedData = (await response.json()) as ParsedCampaign;
-  return buildParseResponse(parsedData, 'sample', fileName);
+  return buildParseResponse(parsedData, tenantId, 'sample', fileName);
 }
 
-export async function uploadAndParse(file: File, tenantId: string, sessionId: string): Promise<ParseResponse> {
+export async function uploadAndParse(file: File, tenantId: string): Promise<ParseResponse> {
   if (!PARSER_URL) {
-    return loadSampleParseResponse(file.name);
+    return loadSampleParseResponse(file.name, tenantId);
   }
 
   const formData = new FormData();
   formData.append('file', file);
   formData.append('tenant_id', tenantId);
-  formData.append('session_id', sessionId);
 
   const response = await fetch(`${PARSER_URL}/parse`, {
     method: 'POST',

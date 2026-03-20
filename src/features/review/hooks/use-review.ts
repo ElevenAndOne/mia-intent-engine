@@ -1,12 +1,14 @@
 import { useState, useCallback } from 'react';
 import type { ParsedCampaign, Campaign, Phase, Kpi } from '../../../types/campaign';
 import { submitCampaign } from '../services/submission-service';
+import type { SubmissionResponse } from '../types';
 
-export function useReview(initialData: ParsedCampaign, sessionId: string) {
+export function useReview(initialData: ParsedCampaign, tenantId: string, filename: string) {
   const [data, setData] = useState<ParsedCampaign>(initialData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [submissionResult, setSubmissionResult] = useState<SubmissionResponse | null>(null);
 
   const updateCampaignField = useCallback((field: keyof Campaign, value: string | number) => {
     setData(prev => ({
@@ -44,14 +46,25 @@ export function useReview(initialData: ParsedCampaign, sessionId: string) {
     setIsSubmitting(true);
     setError(null);
     try {
-      await submitCampaign(data, sessionId);
+      const result = await submitCampaign(data, tenantId, filename);
+      setSubmissionResult(result);
       setIsSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Submission failed');
     } finally {
       setIsSubmitting(false);
     }
-  }, [data, sessionId]);
+  }, [data, filename, tenantId]);
 
-  return { data, isSubmitting, isSubmitted, error, updateCampaignField, updatePhaseField, updateKpi, submit };
+  return {
+    data,
+    isSubmitting,
+    isSubmitted,
+    error,
+    submissionResult,
+    updateCampaignField,
+    updatePhaseField,
+    updateKpi,
+    submit,
+  };
 }

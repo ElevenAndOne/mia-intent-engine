@@ -11,7 +11,6 @@ type UploadViewProps = {
   isUploading: boolean;
   error: string | null;
   parsedData: ParsedCampaign | null;
-  importResult: ParseResponse['mia_import'] | null;
   parseMessage?: string | null;
   parseSource?: ParseResponse['source'];
   onFileSelect: (file: File) => void;
@@ -20,7 +19,7 @@ type UploadViewProps = {
   onReset: () => void;
 };
 
-export function UploadView({ file, isUploading, error, parsedData, importResult, parseMessage, parseSource, onFileSelect, onUpload, onContinue, onReset }: UploadViewProps) {
+export function UploadView({ file, isUploading, error, parsedData, parseMessage, parseSource, onFileSelect, onUpload, onContinue, onReset }: UploadViewProps) {
   if (isUploading) {
     return (
       <Card className="flex items-center justify-center py-12">
@@ -34,7 +33,7 @@ export function UploadView({ file, isUploading, error, parsedData, importResult,
       <Card>
         <div className="flex flex-col gap-4">
           <StatusMessage
-            variant={importResult?.status === 'ok' ? 'success' : 'info'}
+            variant="success"
             title="Campaign parsed successfully"
             message={`${parsedData.campaign.campaign_name} \u2014 ${parsedData.campaign.client_name} \u2014 ${parsedData.phases.length} phases`}
           />
@@ -62,12 +61,6 @@ export function UploadView({ file, isUploading, error, parsedData, importResult,
               <p>{parsedData.phases.length}</p>
             </div>
           </div>
-          {importResult?.status === 'ok' && (
-            <StatusMessage
-              variant="success"
-              message={`Imported to MIA (ID: ${importResult.campaign_id})`}
-            />
-          )}
           <div className="flex gap-3">
             <Button onClick={onContinue}>Review Data</Button>
             <Button variant="secondary" onClick={onReset}>Upload Different File</Button>
