@@ -7,6 +7,8 @@ type UseGoogleSignInResult = {
 };
 
 const GOOGLE_SCRIPT_SELECTOR = 'script[src*="accounts.google.com/gsi/client"]';
+const GOOGLE_INIT_RETRY_LIMIT = 20;
+const GOOGLE_INIT_RETRY_DELAY_MS = 250;
 
 export function useGoogleSignIn(onCredential: (idToken: string) => void): UseGoogleSignInResult {
   const buttonRef = useRef<HTMLDivElement>(null);
@@ -51,10 +53,21 @@ export function useGoogleSignIn(onCredential: (idToken: string) => void): UseGoo
   }, [handleCredentialResponse]);
 
   useEffect(() => {
+    let retryCount = 0;
+    let retryTimer: number | null = null;
     const script = document.querySelector<HTMLScriptElement>(GOOGLE_SCRIPT_SELECTOR);
-
-    if (typeof google !== 'undefined') {
+    const cleanupRetryTimer = () => {
+      if (retryTimer !== null) {
+        window.clearInterval(retryTimer);
+        retryTimer = null;
+      }
+    };
+    const tryInitializeGoogle = () => {
       initializeGoogle();
+      return isInitializedRef.current;
+    };
+
+    if (tryInitializeGoogle()) {
       return;
     }
 
@@ -63,15 +76,36 @@ export function useGoogleSignIn(onCredential: (idToken: string) => void): UseGoo
       return;
     }
 
+    const handleScriptLoad = () => {
+      if (tryInitializeGoogle()) {
+        cleanupRetryTimer();
+      }
+    };
+
     const handleScriptError = () => {
+      cleanupRetryTimer();
       setError('Google sign-in failed to load.');
     };
 
-    script.addEventListener('load', initializeGoogle);
+    script.addEventListener('load', handleScriptLoad);
     script.addEventListener('error', handleScriptError);
+    retryTimer = window.setInterval(() => {
+      retryCount += 1;
+
+      if (tryInitializeGoogle()) {
+        cleanupRetryTimer();
+        return;
+      }
+
+      if (retryCount >= GOOGLE_INIT_RETRY_LIMIT) {
+        cleanupRetryTimer();
+        setError('Google sign-in failed to initialize.');
+      }
+    }, GOOGLE_INIT_RETRY_DELAY_MS);
 
     return () => {
-      script.removeEventListener('load', initializeGoogle);
+      cleanupRetryTimer();
+      script.removeEventListener('load', handleScriptLoad);
       script.removeEventListener('error', handleScriptError);
     };
   }, [initializeGoogle]);
