@@ -1,12 +1,10 @@
 import type { WorkspacesResponse } from '../types';
-
-const API_BASE = import.meta.env.VITE_MIA_API_URL;
+import { LOCAL_TEST_WORKSPACES } from '../../../config/local-test-mode';
 
 export async function fetchWorkspaces(sessionId: string): Promise<WorkspacesResponse> {
-  const response = await fetch(`${API_BASE}/api/tenants`, {
-    headers: { 'X-Session-ID': sessionId },
-  });
+  if (!sessionId) {
+    throw new Error('Missing local test session');
+  }
 
-  if (!response.ok) throw new Error('Failed to fetch workspaces');
-  return response.json() as Promise<WorkspacesResponse>;
+  return Promise.resolve({ tenants: LOCAL_TEST_WORKSPACES });
 }

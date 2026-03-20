@@ -13,6 +13,8 @@ type ReviewViewProps = {
   isSubmitting: boolean;
   isSubmitted: boolean;
   error: string | null;
+  parseMessage: string | null;
+  parseSource: 'live' | 'sample' | undefined;
   submissionResult: SubmissionResponse | null;
   onUpdateCampaign: (field: keyof Campaign, value: string | number) => void;
   onUpdatePhase: (phaseIndex: number, field: keyof Phase, value: string | number) => void;
@@ -21,7 +23,7 @@ type ReviewViewProps = {
   onBack: () => void;
 };
 
-export function ReviewView({ data, isSubmitting, isSubmitted, error, submissionResult, onUpdateCampaign, onUpdatePhase, onUpdateKpi, onSubmit, onBack }: ReviewViewProps) {
+export function ReviewView({ data, isSubmitting, isSubmitted, error, parseMessage, parseSource, submissionResult, onUpdateCampaign, onUpdatePhase, onUpdateKpi, onSubmit, onBack }: ReviewViewProps) {
   if (isSubmitted) {
     return (
       <Card className="text-center">
@@ -76,6 +78,10 @@ export function ReviewView({ data, isSubmitting, isSubmitted, error, submissionR
             ))}
           </div>
         </Card>
+      )}
+
+      {parseSource === 'sample' && parseMessage && (
+        <StatusMessage variant="warning" message={parseMessage} />
       )}
 
       <div className="flex flex-col gap-4">

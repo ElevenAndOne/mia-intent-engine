@@ -1,5 +1,6 @@
 import type { ParseResponse } from '../types';
 import type { ParsedCampaign } from '../../../types/campaign';
+import { USE_LOCAL_TEST_MODE } from '../../../config/local-test-mode';
 
 const PARSER_URL = import.meta.env.VITE_PARSER_URL;
 const PARSER_API_KEY = import.meta.env.VITE_PARSER_API_KEY;
@@ -41,7 +42,7 @@ function normalizeLiveParseResponse(result: ParseResponse, fileName: string): Pa
   };
 }
 
-async function loadSampleParseResponse(fileName: string, tenantId: string): Promise<ParseResponse> {
+async function loadSampleParseResponse(file: File, tenantId: string): Promise<ParseResponse> {
   const response = await fetch(SAMPLE_PARSE_DATA_URL);
 
   if (!response.ok) {
@@ -49,12 +50,12 @@ async function loadSampleParseResponse(fileName: string, tenantId: string): Prom
   }
 
   const parsedData = (await response.json()) as ParsedCampaign;
-  return buildParseResponse(parsedData, tenantId, 'sample', fileName);
+  return buildParseResponse(parsedData, tenantId, 'sample', file.name);
 }
 
 export async function uploadAndParse(file: File, tenantId: string): Promise<ParseResponse> {
-  if (!PARSER_URL) {
-    return loadSampleParseResponse(file.name, tenantId);
+  if (USE_LOCAL_TEST_MODE || !PARSER_URL) {
+    return loadSampleParseResponse(file, tenantId);
   }
 
   const formData = new FormData();

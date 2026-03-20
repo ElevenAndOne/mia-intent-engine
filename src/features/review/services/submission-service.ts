@@ -1,5 +1,6 @@
 import type { ParsedCampaign } from '../../../types/campaign';
 import type { SubmissionResponse } from '../types';
+import { USE_LOCAL_TEST_MODE } from '../../../config/local-test-mode';
 
 const PARSER_URL = import.meta.env.VITE_PARSER_URL;
 const PARSER_API_KEY = import.meta.env.VITE_PARSER_API_KEY;
@@ -19,7 +20,7 @@ function buildSampleSubmissionResponse(data: ParsedCampaign, tenantId: string): 
 }
 
 export async function submitCampaign(data: ParsedCampaign, tenantId: string, filename: string): Promise<SubmissionResponse> {
-  if (!PARSER_URL) {
+  if (USE_LOCAL_TEST_MODE || !PARSER_URL) {
     return buildSampleSubmissionResponse(data, tenantId);
   }
 
