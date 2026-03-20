@@ -8,7 +8,6 @@ import { useFileUpload } from '../features/upload/hooks/use-file-upload';
 import { useReview } from '../features/review/hooks/use-review';
 import { Stepper } from '../components/stepper';
 import { Button } from '../components/button';
-import { StatusMessage } from '../components/status-message';
 import { WorkspacePicker } from '../features/workspace/components/workspace-picker';
 import { UploadView } from '../features/upload/components/upload-view';
 import { ReviewView } from '../features/review/components/review-view';
