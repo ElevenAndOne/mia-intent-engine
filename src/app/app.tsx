@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { AuthProvider, useAuthContext } from '../contexts/auth-context';
 import { LoginView } from '../features/auth/components/login-view';
 import { useGoogleSignIn } from '../features/auth/hooks/use-google-sign-in';
@@ -7,10 +8,20 @@ import { useFileUpload } from '../features/upload/hooks/use-file-upload';
 import { useReview } from '../features/review/hooks/use-review';
 import { Stepper } from '../components/stepper';
 import { Button } from '../components/button';
+import { StatusMessage } from '../components/status-message';
 import { WorkspacePicker } from '../features/workspace/components/workspace-picker';
 import { UploadView } from '../features/upload/components/upload-view';
 import { ReviewView } from '../features/review/components/review-view';
 import type { ParsedCampaign } from '../types/campaign';
+
+type ReviewStepProps = {
+  initialData: ParsedCampaign;
+  tenantId: string;
+  filename: string;
+  parseMessage: string | null;
+  parseSource: 'live' | 'sample' | undefined;
+  onBack: () => void;
+};
 
 const STEP_CONFIG = [
   { id: 'workspace', label: 'Workspace' },
@@ -18,7 +29,7 @@ const STEP_CONFIG = [
   { id: 'review', label: 'Review' },
 ];
 
-function ReviewStep({ initialData, tenantId, filename, onBack }: { initialData: ParsedCampaign; tenantId: string; filename: string; onBack: () => void }) {
+function ReviewStep({ initialData, tenantId, filename, parseMessage, parseSource, onBack }: ReviewStepProps) {
   const review = useReview(initialData, tenantId, filename);
 
   return (
@@ -27,6 +38,8 @@ function ReviewStep({ initialData, tenantId, filename, onBack }: { initialData: 
       isSubmitting={review.isSubmitting}
       isSubmitted={review.isSubmitted}
       error={review.error}
+      parseMessage={parseMessage}
+      parseSource={parseSource}
       submissionResult={review.submissionResult}
       onUpdateCampaign={review.updateCampaignField}
       onUpdatePhase={review.updatePhaseField}
@@ -60,13 +73,15 @@ function AppContent() {
     if (workspaces.selectedWorkspace) steps.completeAndNext();
   };
 
-  const handleUploadContinue = () => {
-    if (upload.parsedData) steps.completeAndNext();
-  };
-
   const handleReviewBack = () => {
     steps.goBack();
   };
+
+  useEffect(() => {
+    if (steps.currentStep === 'upload' && upload.parsedData) {
+      steps.completeAndNext();
+    }
+  }, [steps, upload.parsedData]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -99,12 +114,8 @@ function AppContent() {
             file={upload.file}
             isUploading={upload.isUploading}
             error={upload.error}
-            parsedData={upload.parsedData}
-            parseMessage={parseResult?.message}
-            parseSource={parseResult?.source}
             onFileSelect={upload.selectFile}
             onUpload={upload.upload}
-            onContinue={handleUploadContinue}
             onReset={upload.reset}
           />
         )}
@@ -114,6 +125,8 @@ function AppContent() {
             initialData={upload.parsedData}
             tenantId={parseResult.tenant_id}
             filename={parseResult.filename}
+            parseMessage={parseResult.message ?? null}
+            parseSource={parseResult.source}
             onBack={handleReviewBack}
           />
         )}
