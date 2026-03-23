@@ -1,16 +1,15 @@
-import type { RefObject } from 'react';
+import { Button } from '../../../components/button';
 import { Card } from '../../../components/card';
 import { Loader } from '../../../components/loader';
 import { StatusMessage } from '../../../components/status-message';
 
 type LoginViewProps = {
-  buttonRef: RefObject<HTMLDivElement | null>;
-  isGoogleReady: boolean;
   isLoading: boolean;
   error: string | null;
+  onSignIn: () => void;
 };
 
-export function LoginView({ buttonRef, isGoogleReady, isLoading, error }: LoginViewProps) {
+export function LoginView({ isLoading, error, onSignIn }: LoginViewProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-md text-center">
@@ -22,10 +21,9 @@ export function LoginView({ buttonRef, isGoogleReady, isLoading, error }: LoginV
           <Loader label="Signing in..." />
         ) : (
           <div className="flex flex-col items-center gap-4">
-            <div className={`flex min-h-11 w-full max-w-xs items-center justify-center ${isGoogleReady ? '' : 'rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-500'}`}>
-              <div ref={buttonRef} className={isGoogleReady ? '' : 'hidden'} />
-              {!isGoogleReady && <span>Loading Google Sign-In...</span>}
-            </div>
+            <Button onClick={onSignIn} className="w-full max-w-xs">
+              Continue with Google
+            </Button>
             {error && <StatusMessage variant="error" message={error} />}
           </div>
         )}

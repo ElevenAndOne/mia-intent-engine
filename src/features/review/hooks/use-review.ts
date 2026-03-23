@@ -3,7 +3,7 @@ import type { ParsedCampaign, Campaign, Phase, Kpi } from '../../../types/campai
 import { submitCampaign } from '../services/submission-service';
 import type { SubmissionResponse } from '../types';
 
-export function useReview(initialData: ParsedCampaign, tenantId: string, filename: string) {
+export function useReview(initialData: ParsedCampaign, tenantId: string, accountId: string, filename: string) {
   const [data, setData] = useState<ParsedCampaign>(initialData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -46,7 +46,7 @@ export function useReview(initialData: ParsedCampaign, tenantId: string, filenam
     setIsSubmitting(true);
     setError(null);
     try {
-      const result = await submitCampaign(data, tenantId, filename);
+      const result = await submitCampaign(data, tenantId, accountId, filename);
       setSubmissionResult(result);
       setIsSubmitted(true);
     } catch (err) {
@@ -54,7 +54,7 @@ export function useReview(initialData: ParsedCampaign, tenantId: string, filenam
     } finally {
       setIsSubmitting(false);
     }
-  }, [data, filename, tenantId]);
+  }, [accountId, data, filename, tenantId]);
 
   return {
     data,

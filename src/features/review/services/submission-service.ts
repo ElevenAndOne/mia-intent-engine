@@ -4,10 +4,11 @@ import type { SubmissionResponse } from '../types';
 const PARSER_URL = import.meta.env.VITE_PARSER_URL;
 const PARSER_API_KEY = import.meta.env.VITE_PARSER_API_KEY;
 
-function buildSampleSubmissionResponse(data: ParsedCampaign, tenantId: string): SubmissionResponse {
+function buildSampleSubmissionResponse(data: ParsedCampaign, tenantId: string, accountId: string): SubmissionResponse {
   return {
     success: true,
     tenant_id: tenantId,
+    account_id: accountId,
     campaign_name: data.campaign.campaign_name,
     mia_import: {
       status: 'ok',
@@ -18,9 +19,9 @@ function buildSampleSubmissionResponse(data: ParsedCampaign, tenantId: string): 
   };
 }
 
-export async function submitCampaign(data: ParsedCampaign, tenantId: string, filename: string): Promise<SubmissionResponse> {
+export async function submitCampaign(data: ParsedCampaign, tenantId: string, accountId: string, filename: string): Promise<SubmissionResponse> {
   if (!PARSER_URL) {
-    return buildSampleSubmissionResponse(data, tenantId);
+    return buildSampleSubmissionResponse(data, tenantId, accountId);
   }
 
   const response = await fetch(`${PARSER_URL}/confirm`, {
@@ -31,6 +32,7 @@ export async function submitCampaign(data: ParsedCampaign, tenantId: string, fil
     },
     body: JSON.stringify({
       tenant_id: tenantId,
+      account_id: accountId,
       parsed_data: data,
       filename,
     }),

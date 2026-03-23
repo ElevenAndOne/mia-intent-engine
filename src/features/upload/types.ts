@@ -4,6 +4,7 @@ export type ParseResponse = {
   success: boolean;
   filename: string;
   tenant_id: string;
+  account_id?: string;
   campaign_name: string;
   client_name: string;
   phases_count: number;

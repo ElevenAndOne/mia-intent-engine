@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react';
 
-export type Step = 'workspace' | 'upload' | 'review';
+export type Step = 'account' | 'upload' | 'review';
 
-const STEP_ORDER: Step[] = ['workspace', 'upload', 'review'];
+const STEP_ORDER: Step[] = ['account', 'upload', 'review'];
 
-export function useStepNavigation(initialStep: Step = 'workspace') {
+export function useStepNavigation(initialStep: Step = 'account') {
   const [currentStep, setCurrentStep] = useState<Step>(initialStep);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
 
@@ -32,7 +32,7 @@ export function useStepNavigation(initialStep: Step = 'workspace') {
   }, [currentIndex]);
 
   const reset = useCallback(() => {
-    setCurrentStep('workspace');
+    setCurrentStep('account');
     setCompletedSteps(new Set());
   }, []);
 

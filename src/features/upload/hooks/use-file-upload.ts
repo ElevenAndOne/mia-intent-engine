@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import type { ParseResponse } from '../types';
 import { uploadAndParse } from '../services/upload-service';
 
-export function useFileUpload(tenantId: string) {
+export function useFileUpload(tenantId: string, accountId: string) {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,19 +20,26 @@ export function useFileUpload(tenantId: string) {
   }, []);
 
   const upload = useCallback(async () => {
-    if (!file || !tenantId) return;
+    if (!file) {
+      return;
+    }
+
+    if (!tenantId || !accountId) {
+      setError('Select an account before uploading a file.');
+      return;
+    }
 
     setIsUploading(true);
     setError(null);
     try {
-      const result = await uploadAndParse(file, tenantId);
+      const result = await uploadAndParse(file, tenantId, accountId);
       setParseResult(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload failed');
     } finally {
       setIsUploading(false);
     }
-  }, [file, tenantId]);
+  }, [accountId, file, tenantId]);
 
   const reset = useCallback(() => {
     setFile(null);

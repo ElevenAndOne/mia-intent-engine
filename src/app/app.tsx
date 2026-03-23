@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 import { AuthProvider, useAuthContext } from '../contexts/auth-context';
 import { LoginView } from '../features/auth/components/login-view';
-import { useGoogleSignIn } from '../features/auth/hooks/use-google-sign-in';
 import { useStepNavigation } from '../hooks/use-step-navigation';
-import { useWorkspaces } from '../features/workspace/hooks/use-workspaces';
+import { useAccounts } from '../features/account/hooks/use-accounts';
 import { useFileUpload } from '../features/upload/hooks/use-file-upload';
 import { useReview } from '../features/review/hooks/use-review';
 import { Stepper } from '../components/stepper';
 import { Button } from '../components/button';
-import { WorkspacePicker } from '../features/workspace/components/workspace-picker';
+import { AccountPicker } from '../features/account/components/account-picker';
 import { UploadView } from '../features/upload/components/upload-view';
 import { ReviewView } from '../features/review/components/review-view';
 import type { ParsedCampaign } from '../types/campaign';
@@ -16,6 +15,7 @@ import type { ParsedCampaign } from '../types/campaign';
 type ReviewStepProps = {
   initialData: ParsedCampaign;
   tenantId: string;
+  accountId: string;
   filename: string;
   parseMessage: string | null;
   parseSource: 'live' | 'sample' | undefined;
@@ -23,13 +23,13 @@ type ReviewStepProps = {
 };
 
 const STEP_CONFIG = [
-  { id: 'workspace', label: 'Workspace' },
+  { id: 'account', label: 'Account' },
   { id: 'upload', label: 'Upload' },
   { id: 'review', label: 'Review' },
 ];
 
-function ReviewStep({ initialData, tenantId, filename, parseMessage, parseSource, onBack }: ReviewStepProps) {
-  const review = useReview(initialData, tenantId, filename);
+function ReviewStep({ initialData, tenantId, accountId, filename, parseMessage, parseSource, onBack }: ReviewStepProps) {
+  const review = useReview(initialData, tenantId, accountId, filename);
 
   return (
     <ReviewView
@@ -51,25 +51,24 @@ function ReviewStep({ initialData, tenantId, filename, parseMessage, parseSource
 
 function AppContent() {
   const auth = useAuthContext();
-  const googleSignIn = useGoogleSignIn(auth.login);
   const steps = useStepNavigation();
-  const workspaces = useWorkspaces(auth.sessionId);
-  const upload = useFileUpload(workspaces.selectedWorkspace?.tenant_id ?? '');
+  const accounts = useAccounts(auth.sessionId);
+  const selectedTenantId = accounts.selectedAccount?.tenant_id ?? auth.tenantId ?? '';
+  const upload = useFileUpload(selectedTenantId, accounts.selectedAccount?.id ?? '');
   const parseResult = upload.parseResult;
 
   if (!auth.isAuthenticated) {
     return (
       <LoginView
-        buttonRef={googleSignIn.buttonRef}
-        isGoogleReady={googleSignIn.isReady}
         isLoading={auth.isLoading}
-        error={auth.error ?? googleSignIn.error}
+        error={auth.error}
+        onSignIn={auth.login}
       />
     );
   }
 
-  const handleWorkspaceConfirm = () => {
-    if (workspaces.selectedWorkspace) steps.completeAndNext();
+  const handleAccountConfirm = () => {
+    if (accounts.selectedAccount) steps.completeAndNext();
   };
 
   const handleReviewBack = () => {
@@ -97,14 +96,14 @@ function AppContent() {
       </header>
 
       <main className="mx-auto max-w-4xl p-4 sm:p-6">
-        {steps.currentStep === 'workspace' && (
-          <WorkspacePicker
-            workspaces={workspaces.workspaces}
-            selectedWorkspace={workspaces.selectedWorkspace}
-            isLoading={workspaces.isLoading}
-            error={workspaces.error}
-            onSelect={workspaces.selectWorkspace}
-            onConfirm={handleWorkspaceConfirm}
+        {steps.currentStep === 'account' && (
+          <AccountPicker
+            accounts={accounts.accounts}
+            selectedAccount={accounts.selectedAccount}
+            isLoading={accounts.isLoading}
+            error={accounts.error}
+            onSelect={accounts.selectAccount}
+            onConfirm={handleAccountConfirm}
           />
         )}
 
@@ -122,7 +121,8 @@ function AppContent() {
         {steps.currentStep === 'review' && upload.parsedData && parseResult && (
           <ReviewStep
             initialData={upload.parsedData}
-            tenantId={parseResult.tenant_id}
+            tenantId={selectedTenantId}
+            accountId={accounts.selectedAccount?.id ?? parseResult.account_id ?? ''}
             filename={parseResult.filename}
             parseMessage={parseResult.message ?? null}
             parseSource={parseResult.source}
