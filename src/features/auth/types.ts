@@ -8,9 +8,6 @@ export type SessionResponse = {
   session_id?: string;
   tenant_id?: string;
   user?: AuthUser;
-  active_workspace?: {
-    tenant_id?: string;
-  };
 };
 
 export type CompleteOAuthResponse = {

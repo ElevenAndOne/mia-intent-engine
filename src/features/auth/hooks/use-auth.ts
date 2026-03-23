@@ -25,7 +25,7 @@ function clearOAuthParams(): void {
 }
 
 function resolveTenantId(session: SessionResponse): string | null {
-  return session.tenant_id ?? session.active_workspace?.tenant_id ?? null;
+  return session.tenant_id ?? null;
 }
 
 export function useAuth() {

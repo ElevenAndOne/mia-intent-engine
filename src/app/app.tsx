@@ -53,7 +53,7 @@ function AppContent() {
   const auth = useAuthContext();
   const steps = useStepNavigation();
   const accounts = useAccounts(auth.sessionId);
-  const selectedTenantId = accounts.selectedAccount?.tenant_id ?? auth.tenantId ?? '';
+  const selectedTenantId = auth.tenantId ?? '';
   const upload = useFileUpload(selectedTenantId, accounts.selectedAccount?.id ?? '');
   const parseResult = upload.parseResult;
 

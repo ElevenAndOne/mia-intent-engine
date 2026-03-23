@@ -24,8 +24,13 @@ export function useFileUpload(tenantId: string, accountId: string) {
       return;
     }
 
-    if (!tenantId || !accountId) {
+    if (!accountId) {
       setError('Select an account before uploading a file.');
+      return;
+    }
+
+    if (!tenantId) {
+      setError('Your session is missing a tenant ID. Refresh the page or sign in again.');
       return;
     }
 
