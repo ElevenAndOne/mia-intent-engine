@@ -57,6 +57,12 @@ function AppContent() {
   const upload = useFileUpload(selectedTenantId, accounts.selectedAccount?.id ?? '');
   const parseResult = upload.parseResult;
 
+  useEffect(() => {
+    if (steps.currentStep === 'upload' && upload.parsedData) {
+      steps.completeAndNext();
+    }
+  }, [steps, upload.parsedData]);
+
   if (!auth.isAuthenticated) {
     return (
       <LoginView
@@ -74,12 +80,6 @@ function AppContent() {
   const handleReviewBack = () => {
     steps.goBack();
   };
-
-  useEffect(() => {
-    if (steps.currentStep === 'upload' && upload.parsedData) {
-      steps.completeAndNext();
-    }
-  }, [steps, upload.parsedData]);
 
   return (
     <div className="min-h-screen bg-gray-50">
