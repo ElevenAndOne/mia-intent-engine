@@ -67,10 +67,9 @@ export async function completeGoogleOAuth(userId: string, sessionId: string): Pr
 }
 
 export async function fetchSession(sessionId: string): Promise<SessionResponse> {
-  const response = await fetchWithTimeout(`${API_BASE}/api/session/validate`, {
-    method: 'GET',
-    headers: { 'X-Session-ID': sessionId },
-  });
+  const url = new URL(`${API_BASE}/api/session/validate`);
+  url.searchParams.set('session_id', sessionId);
+  const response = await fetchWithTimeout(url.toString(), { method: 'GET' });
 
   if (!response.ok) {
     const errorText = await response.text().catch(() => '');
