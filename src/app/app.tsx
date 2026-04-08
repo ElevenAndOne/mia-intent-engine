@@ -20,6 +20,7 @@ type ReviewStepProps = {
   parseMessage: string | null;
   parseSource: 'live' | 'sample' | undefined;
   onBack: () => void;
+  onRestart: () => void;
 };
 
 const STEP_CONFIG = [
@@ -28,7 +29,7 @@ const STEP_CONFIG = [
   { id: 'review', label: 'Review' },
 ];
 
-function ReviewStep({ initialData, tenantId, accountId, filename, parseMessage, parseSource, onBack }: ReviewStepProps) {
+function ReviewStep({ initialData, tenantId, accountId, filename, parseMessage, parseSource, onBack, onRestart }: ReviewStepProps) {
   const review = useReview(initialData, tenantId, accountId, filename);
 
   return (
@@ -45,6 +46,7 @@ function ReviewStep({ initialData, tenantId, accountId, filename, parseMessage, 
       onUpdateKpi={review.updateKpi}
       onSubmit={review.submit}
       onBack={onBack}
+      onRestart={onRestart}
     />
   );
 }
@@ -79,6 +81,11 @@ function AppContent() {
 
   const handleReviewBack = () => {
     steps.goBack();
+  };
+
+  const handleRestart = () => {
+    upload.reset();
+    steps.reset();
   };
 
   return (
@@ -127,6 +134,7 @@ function AppContent() {
             parseMessage={parseResult.message ?? null}
             parseSource={parseResult.source}
             onBack={handleReviewBack}
+            onRestart={handleRestart}
           />
         )}
       </main>
