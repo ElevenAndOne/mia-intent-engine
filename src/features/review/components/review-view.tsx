@@ -21,9 +21,10 @@ type ReviewViewProps = {
   onUpdateKpi: (phaseIndex: number, kpiIndex: number, field: keyof Kpi, value: string | number) => void;
   onSubmit: () => void;
   onBack: () => void;
+  onRestart: () => void;
 };
 
-export function ReviewView({ data, isSubmitting, isSubmitted, error, parseMessage, parseSource, submissionResult, onUpdateCampaign, onUpdatePhase, onUpdateKpi, onSubmit, onBack }: ReviewViewProps) {
+export function ReviewView({ data, isSubmitting, isSubmitted, error, parseMessage, parseSource, submissionResult, onUpdateCampaign, onUpdatePhase, onUpdateKpi, onSubmit, onBack, onRestart }: ReviewViewProps) {
   if (isSubmitted) {
     return (
       <Card className="text-center">
@@ -36,8 +37,8 @@ export function ReviewView({ data, isSubmitting, isSubmitted, error, parseMessag
               : 'Your campaign data has been submitted successfully.'
           }
         />
-        <Button variant="secondary" onClick={onBack} className="mt-4">
-          Upload Another
+        <Button variant="secondary" onClick={onRestart} className="mt-4">
+          Start New Import
         </Button>
       </Card>
     );
